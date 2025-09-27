@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_PRODUCTS 500
+
+int getIntegerInput(const char *prompt, int min, int max) 
+{
+    char buffer[100];
+    int value;
+    char *endptr;
+
+    while (1) 
+    {
+        printf("%s", prompt);
+
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) 
+        {
+            printf("Input error. Try again.\n");
+            continue;
+        }
+
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        // convert to int
+        value = (int)strtol(buffer, &endptr, 10);
+
+        // check if valid number
+        if (*endptr != '\0') 
+        {
+            printf("Invalid input (not a number). Try again.\n");
+            continue;
+        }
+
+        if (value < min || value > max) 
+        {
+            printf("Invalid number! Must be between %d and %d.\n", min, max);
+            continue;
+        }
+
+        return value;
+    }
+}
+
+// Function to read yes/no
+char getYesNoInput(const char *prompt) 
+{
+    char buffer[10];
+    while (1) {
+        printf("%s", prompt);
+
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) 
+        {
+            printf("Input error. Try again.\n");
+            continue;
+        }
+
+        if (buffer[0] == 'y' || buffer[0] == 'Y') return 'y';
+        if (buffer[0] == 'n' || buffer[0] == 'N') return 'n';
+
+        printf("Please enter 'y' or 'n'.\n");
+    }
+}
+
+int main() 
+{
+    int inventory[MAX_PRODUCTS + 1] = {0}; // index 0 unused
+    int product_id, amount;
+    char cont;
+
+    do 
+    {
+        // keep asking until valid product number
+        product_id = getIntegerInput("Give Product number (1-500): ", 1, MAX_PRODUCTS);
+
+        // keep asking until valid amount
+        amount = getIntegerInput("Give amount for product: ", 0, 1000000);
+
+        // store it
+        inventory[product_id] = amount;
+
+        // ask to continue
+        cont = getYesNoInput("Do you want to continue? (y/n): ");
+
+    } while (cont == 'y');
+
+    // print results
+    printf("\nYou entered the following number of products:\n");
+    for (int i = 1; i <= MAX_PRODUCTS; i++) 
+    {
+        if (inventory[i] > 0) 
+        {
+            printf("product %3d: %d pcs\n", i, inventory[i]);
+        }
+    }
+
+    return 0;
+}
