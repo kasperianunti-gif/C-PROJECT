@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int main() 
+{
+    int inventory[501] = {0};  // 0..500, we'll ignore index 0
+    int product_id, amount;
+    char cont;
+
+    do 
+{
+        // Ask for product number
+        printf("Give Product number: ");
+        scanf("%d", &product_id);
+
+        if (product_id < 1 || product_id > 500) 
+        {
+            printf("Invalid product number! Must be between 1 and 500.\n");
+            continue; // ask again
+        }
+
+        // Ask for amount
+        printf("Give amount for product number %d: ", product_id);
+        scanf("%d", &amount);
+
+        if (amount < 0) 
+        {
+            printf("Amount cannot be negative.\n");
+            continue;
+        }
+
+        // Store in inventory
+        inventory[product_id] = amount;
+
+        // Ask to continue
+        printf("Do You want to continue? (y/n): ");
+        scanf(" %c", &cont);  // space before %c skips newline characters
+
+    } while (cont == 'y' || cont == 'Y');
+
+    // Print results
+    printf("\nYou entered the following number of products:\n");
+    for (int i = 1; i <= 500; i++) 
+        {
+        if (inventory[i] > 0) {
+            printf("product %3d: %d pcs\n", i, inventory[i]);
+        }
+    }
+
+    return 0;
+}
