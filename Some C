@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+    int inventory[501] = {0};  // 0..500, we'll ignore index 0
+    int product_id, amount;
+    char cont;
+
+    do {
+        printf("Give Product number: "); // Ask for product number
+        scanf("%d", &product_id);
+
+        if (product_id < 1 || product_id > 500) {
+            printf("Invalid product number! Must be between 1 and 500.\n");
+            continue; // ask again
+        }
